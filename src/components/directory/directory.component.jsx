@@ -1,8 +1,8 @@
-import './categories.scss'
+import './directory.scss'
 
-import Category from "../category/Category.component";
+import Category from "../category/category.component.jsx";
 
-const Categories = ({categories}) => {
+const Directory = ({categories}) => {
 
   return (
     <div className="categories-container" >
@@ -14,4 +14,4 @@ const Categories = ({categories}) => {
   )
 }
 
-export default Categories
+export default Directory
