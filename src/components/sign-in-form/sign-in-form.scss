@@ -1,0 +1,20 @@
+.form-container{
+    display: flex;
+    justify-content: center;
+    & > div {
+        margin: 1rem;
+        flex-basis: min(50%, 380px);
+    }   
+    .sign-in-container{
+        display: flex;
+        flex-direction: column;
+        width: 380px;
+        h2 {
+            margin: 10px 0;
+        }
+    }
+    .buttons-container {
+        display: flex;
+        justify-content: space-between;
+    }
+}
