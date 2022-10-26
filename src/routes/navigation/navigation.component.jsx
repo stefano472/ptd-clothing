@@ -1,7 +1,7 @@
 import { Outlet, Link } from "react-router-dom"
 import { ReactComponent as PtdLogo } from "../../assets/my-logo.svg"
 
-import './navgation.scss'
+import './navigation.scss'
 
 const Navigation = () => {
   return (
