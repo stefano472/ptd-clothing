@@ -8,6 +8,7 @@ import App from './App';
 import { UserProvider } from './contexts/user.context';
 
 import './index.scss';
+import { ProductsProvider } from './contexts/products.context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,7 +18,9 @@ root.render(
         {/* vado a specificare che tutti i component all'interno di questo tag,
         nel mio caso tutti, perchè ho wrappato App, avranno accesso alle due var esplicitate
         nel context(ovvero il context stesso e la funzione per settarlo) */}
-        <App /> 
+        <ProductsProvider>
+          <App /> 
+        </ProductsProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>

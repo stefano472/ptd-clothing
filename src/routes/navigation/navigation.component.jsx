@@ -23,8 +23,8 @@ const Navigation = () => {
                     <PtdLogo className="logo" style={{filter: 'brightness(0)'}} />
                 </Link>
                 <div className="nav-links-container">
-                    <Link className="nav-link" to='/' >
-                        LINK
+                    <Link className="nav-link" to='/shop' >
+                        SHOP
                     </Link>
                     { 
                         currentUser ? 
