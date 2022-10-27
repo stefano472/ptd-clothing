@@ -11,7 +11,9 @@ const App = () => {
           invece di utilizzare pattern matching path se voglio visualizzare una cosa assieme 
           al path genitore posso passare index come un attribute, nel nostro caso è come dire
           index={true}, ma posso semplicficare in index e basta perche sottointeso e sostanzialmente
-          sgnifica che quando il path matcha col genitore mostramelo  
+          sgnifica che quando il path matcha col genitore mostramelo
+          In sostanza vado a mostrare l'elemento Home quando i lpath è uguale al genitore, 
+          nel nostro caso '/'
         */}
         <Route index element={<Home />} />
         <Route path="auth" element={<Authentication />} />

@@ -1,26 +1,34 @@
 import { useState } from 'react'
 
-import './sign-in-form.scss'
 import FormInput from '../form-input/form-input.component'
 import Button from '../button/button.component'
 
-import { signInWithGooglePopup, signInAuthWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils"
+// import { UserContext } from '../../contexts/user.context'
 
+import { signInWithGooglePopup, signInAuthWithEmailAndPassword } from "../../utils/firebase/firebase.utils"
+
+import './sign-in-form.scss'
+
+const defaultFormFields = {
+    email: '',
+    password: '',
+}
 
 const SignInForm = () => {
-    const defaultFormFields = {
-        email: '',
-        password: '',
-    }
-    
-    const signInWithGoogle = async () => {
-        const response = await signInWithGooglePopup()
-        const { user } = response
-        await createUserDocumentFromAuth(user)
-    }  
-      
+        
     const [ signInFields, setSignInFields ] = useState(defaultFormFields)
     const { email, password } = signInFields
+
+    /*
+        vado ad estrapolare del mio UserContext che ho importato, grazie al useContext di 
+        React le funzioni/ i valori che mi servono, in questo caso essendo il component di
+        login mi servirà la funz per settare il mio context con l'utente
+    */
+    // const { setCurrentUser } = useContext(UserContext)
+    
+    const signInWithGoogle = async () => {
+        await signInWithGooglePopup()
+    }  
     
     const resetFormFields = () => {
         setSignInFields(defaultFormFields)
@@ -30,8 +38,8 @@ const SignInForm = () => {
         e.preventDefault()
 
         try{
-            const response = await signInAuthWithEmailAndPassword(email, password)
-            console.log(response)
+            await signInAuthWithEmailAndPassword(email, password)
+
             resetFormFields()
         } catch(e) {
             switch(e.code){
@@ -48,9 +56,9 @@ const SignInForm = () => {
     }
 
     const handleChange = (e) => {
-    const { value, name } = e.target
+        const { value, name } = e.target
 
-    setSignInFields({...signInFields, [name]: value})
+        setSignInFields({...signInFields, [name]: value})
     }
     
     return (

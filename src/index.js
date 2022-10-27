@@ -1,15 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.scss';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
 import { BrowserRouter } from 'react-router-dom';
+import reportWebVitals from './reportWebVitals';
+
+import App from './App';
+import { UserProvider } from './contexts/user.context';
+
+import './index.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <UserProvider>
+        {/* vado a specificare che tutti i component all'interno di questo tag,
+        nel mio caso tutti, perchè ho wrappato App, avranno accesso alle due var esplicitate
+        nel context(ovvero il context stesso e la funzione per settarlo) */}
+        <App /> 
+      </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

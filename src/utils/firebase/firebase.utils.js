@@ -12,7 +12,9 @@ import {
     signInWithPopup, 
     GoogleAuthProvider, 
     createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword  
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
@@ -62,6 +64,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     // console.log(userSnapshot)
 
     if (!userSnapshot.exists()) {
+        
         const { displayName, email } = userAuth
         const createdAt = new Date()
 
@@ -90,3 +93,16 @@ export const signInAuthWithEmailAndPassword = async (email, password) => {
     return await signInWithEmailAndPassword(auth, email, password)
 }
 
+export const signOutUser = async () => await signOut(auth);
+
+/*
+    metodo che mette a disposizione firebase a cui passo la mia auth signature ed un acallback
+    functiion ch evoglio eseguire tutte le volte che chiamo questo metodo
+    è sostanzialmente un open listener permanente che è sempre in ascolto del primo 
+    parametro fornito, ovvero auth (che cambia a tutti i divversi signi in o sign out)
+    quindi al cambiare di auth esegu e la funzione callback
+    l'unico problema è che dobbiamo indicare quando smettere di restare in ascolto, perchè 
+    se la componente unmounta devo rimuovere anche il listener, cosa che faremo nel component
+    dove andiamo ad utilizzarlo, grazie ad un metodo unsubscribe che ci fornisce firebase
+*/
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback)
