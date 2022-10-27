@@ -9,6 +9,7 @@ import { UserProvider } from './contexts/user.context';
 
 import './index.scss';
 import { ProductsProvider } from './contexts/products.context';
+import { CartProvider } from './contexts/cart.context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,7 +20,9 @@ root.render(
         nel mio caso tutti, perchè ho wrappato App, avranno accesso alle due var esplicitate
         nel context(ovvero il context stesso e la funzione per settarlo) */}
         <ProductsProvider>
-          <App /> 
+          <CartProvider >
+            <App /> 
+          </CartProvider>
         </ProductsProvider>
       </UserProvider>
     </BrowserRouter>

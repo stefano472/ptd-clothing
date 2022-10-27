@@ -1,9 +1,15 @@
 import { useContext } from "react"
 import { Outlet, Link } from "react-router-dom"
 import { ReactComponent as PtdLogo } from "../../assets/my-logo.svg"
+import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component"
+import CartIcon from "../../components/cart-icon/cart-icon.components"
 
 import { UserContext } from "../../contexts/user.context"
+import { CartContext } from "../../contexts/cart.context"
+
 import { signOutUser } from "../../utils/firebase/firebase.utils"
+
+
 
 import './navigation.scss'
 
@@ -14,7 +20,13 @@ const Navigation = () => {
         valore dichiaro solo la var currentUser che potrò utilizzar edove voglio nel 
         component
     */
-    const { currentUser }   = useContext(UserContext)
+    const { currentUser } = useContext(UserContext)
+
+    const { cartToggle, setCartToggle } = useContext(CartContext)
+
+    const toggleCart = () => {
+        setCartToggle(!cartToggle)
+    }
 
     return (
         <>
@@ -22,7 +34,7 @@ const Navigation = () => {
                 <Link className="logo-container" to='/' >
                     <PtdLogo className="logo" style={{filter: 'brightness(0)'}} />
                 </Link>
-                <div className="nav-links-container">
+                <div className="nav-links-container" >
                     <Link className="nav-link" to='/shop' >
                         SHOP
                     </Link>
@@ -36,7 +48,11 @@ const Navigation = () => {
                                 SIGN IN
                             </Link>
                     }
+                    <CartIcon toggleCart={toggleCart} />
                 </div>
+                {
+                    cartToggle && <CartDropdown />
+                }
             </div>
             <Outlet />
         </>

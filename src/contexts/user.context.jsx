@@ -40,7 +40,7 @@ export const UserProvider = ({ children }) => {
             createUserDocumentFromAuth(user)
         }
         setCurrentUser(user)
-        console.log(user)
+        // console.log(user)
     })
     //  con use effect quello che metto al return è cosa voglio eseguire all'unmoount del component
     return unsubscribe
