@@ -51,7 +51,7 @@ const Navigation = () => {
                     <CartIcon toggleCart={toggleCart} />
                 </div>
                 {
-                    cartToggle && <CartDropdown />
+                    cartToggle && <CartDropdown toggleCart={toggleCart} />
                 }
             </div>
             <Outlet />
