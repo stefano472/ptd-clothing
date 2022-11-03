@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Navigation from "./routes/navigation/navigation.component";
 import Home from "./routes/home/home.component";
-import Authentication from "./routes/sign-in/authentication.component";
+import Authentication from "./routes/authentication/authentication.component";
 import Shop from "./routes/shop/shop.component";
 import Checkout from "./routes/checkout/checkout.component";
 
@@ -18,7 +18,10 @@ const App = () => {
           nel nostro caso '/'
         */}
         <Route index element={<Home />} />
-        <Route path="shop" element={<Shop />} />
+        {/* se voglio nestare route all'interno di un route dichiaro in primis, che voglio accettare qualsiasi
+        cosa ci sia dopo il / con il * poi vado a dichiarare all'interno del nostro el (shop nel mio
+        caso), che diventerà a sua volta un routes con all'interno route */}
+        <Route path="shop/*" element={<Shop />} />
         <Route path="auth" element={<Authentication />} />
         <Route path="checkout" element={<Checkout />} />
       </Route>

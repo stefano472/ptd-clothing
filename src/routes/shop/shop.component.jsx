@@ -1,20 +1,19 @@
-import { useContext } from "react"
+import { Routes, Route } from "react-router-dom"
 
-import { ProductsContext } from "../../contexts/products.context"
-import ProductCard from "../../components/product-card/product-card.component"
-
+import CategoriesPreview from "../categories-preview/categories-preview.component"
+import Category from "../category/category.component"
 import './shop.scss'
 
 const Shop = () => {
-  const { products } = useContext(ProductsContext)
+
   return (
-    <div className="products-container">
-        {products && products.map((product) => {
-            return (
-              <ProductCard key={product.id} product={product} />
-            )
-        })}
-    </div>
+    <Routes >
+      <Route index element={<CategoriesPreview />} />
+      {/* se devo far cambiare il path in modo dinamico lo appoggio ad una variabile con una colon :
+      nel mio caso :category, per poter aver accesso a questo paramtro dovrò gestirlo nel 
+      category component con un import useParams */}
+      <Route path=":category" element={<Category />} />
+    </Routes>
   )
 }
 
