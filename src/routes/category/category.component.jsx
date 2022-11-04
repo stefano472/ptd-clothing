@@ -9,7 +9,7 @@ import './category.scss'
 
 const Category = () => {
     const { category } = useParams()
-    console.log(category)
+    // console.log(category)
 
     const { categoriesMap } = useContext(CategoriesContext)
 
