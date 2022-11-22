@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useReducer } from "react";
 
 const addCartItem = (cartItems, productToAdd) => {
     const existingItem = cartItems.find( cartItem => cartItem.id === productToAdd.id)
@@ -27,6 +27,7 @@ const removeCartItem = (cartItems, productToRemove) => {
             cartItem
     } )
 }
+
 const clearCartItem = (cartItems, productToClear) => {
     return (cartItems.filter((cartItem) => cartItem.id !== productToClear.id))
 }
@@ -42,50 +43,94 @@ export const CartContext = createContext({
     cartTotal: 0
 })
 
-export const CartProvider = ({children}) => {
-    const [ cartToggle, setCartToggle ] = useState(false)
-    const [ cartItems, setCartItems ] = useState([])
-    const [ cartQuantity, setCartQuantity ] = useState(0)
-    const [ cartTotal, setCartTotal ] = useState(0)
+const CART_ACTION_TYPES = {
+    SET_CART_ITEMS: 'SET_CART_ITEMS',
+    SET_IS_CART_OPEN: 'SET_IS_CART_OPEN'
+}
 
-    useEffect(() => {
-        /* 
-            reduce è un array function molto utile sostanzialmente prende un array e da questo ne restituisce
-            un valore, è una funzione che accetta due argomenti il primo è una callback function alla quale
-            passo due termini (il primo è la somma di tutte le iterazioni, il secondo è l'elemento che vado ad
-            iterare), il secondo è da dove voglio far partire il mio accumulator, nel mio caso 0 ma potrebbe 
-            essere 10 o qualsiasi altro numero 
-        */
-        const newCartQuantity = cartItems.reduce((accumulator, currentItem) => {
+const INITIAL_STATE =  {
+    cartToggle: false,
+    cartItems: [],
+    cartQuantity: 0,
+    cartTotal: 0
+}
+
+// da tenere conto è che il reducer non dovrebbe contenere logica quindi si cerca di isolarla
+// sempre all' esterno in modo da aggiornare solamente lo state qua dentrro
+const CartReducer = (state, action) => {
+    const { type, payload } = action
+
+    switch(type) {
+        case CART_ACTION_TYPES.SET_CART_ITEMS:
+            return {
+                ...state,
+                ...payload
+            }
+        case CART_ACTION_TYPES.SET_IS_CART_OPEN:
+            return {
+                ...state,
+                cartToggle: payload
+            }
+        default:
+            throw new Error(`unhandled cartReducer type action ${type}`)
+    }
+}
+
+export const CartProvider = ({children}) => {
+
+    const [ state, dispatch ] = useReducer(CartReducer, INITIAL_STATE)
+    const { cartItems, cartTotal, cartQuantity, cartToggle } = state
+
+    const updateCartItemsReducers = (newCartItems) => {
+        const newCartQuantity = newCartItems.reduce((accumulator, currentItem) => {
             return accumulator + currentItem.quantity
         }, 0)
-        setCartQuantity(newCartQuantity)
-
-    }, [cartItems])
-
-    useEffect(() => {
-        const newCartTotal = cartItems.reduce((accumulator, currentItem) => {
+        const newCartTotal = newCartItems.reduce((accumulator, currentItem) => {
             return accumulator + currentItem.price * currentItem.quantity
         }, 0)
-        setCartTotal(newCartTotal)
+        
+        dispatch({
+            type: CART_ACTION_TYPES.SET_CART_ITEMS,
+            payload: {
+                cartItems: newCartItems,
+                cartTotal: newCartTotal,
+                cartQuantity: newCartQuantity
+            }
+        })
+    }
 
-    }, [cartItems])
+    const setCartToggle = (bool) => {
+        dispatch({
+            type: CART_ACTION_TYPES.SET_IS_CART_OPEN, 
+            payload: bool
+        })
+    }
 
     const addItemToCart = (productToAdd) => {
-        setCartItems(addCartItem(cartItems, productToAdd))
+        const newCartItems = addCartItem(cartItems, productToAdd)
+        updateCartItemsReducers(newCartItems)
     }
 
     const removeItemFromCart = (productToRemove) => {
-        setCartItems(removeCartItem(cartItems, productToRemove))
+        const newCartItems = removeCartItem(cartItems, productToRemove)
+        updateCartItemsReducers(newCartItems)
     }
 
     const clearItemFromCart = (productToClear) => {
-        setCartItems(clearCartItem(cartItems, productToClear))
+        const newCartItems = clearCartItem(cartItems, productToClear)
+        updateCartItemsReducers(newCartItems)
     }
 
-
-
-    const value = { cartToggle, setCartToggle, cartItems, addItemToCart, removeItemFromCart, clearItemFromCart, cartQuantity, cartTotal }
+    const value = { 
+        cartToggle, 
+        setCartToggle,
+        cartItems,
+        addItemToCart, 
+        removeItemFromCart,
+        clearItemFromCart, 
+        cartQuantity, 
+        cartTotal 
+    }
 
     return <CartContext.Provider value={value} >{children}</CartContext.Provider>
 

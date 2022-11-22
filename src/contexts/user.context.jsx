@@ -1,15 +1,7 @@
-import { createContext, useState, useEffect } from "react"
+import { createContext, useEffect, useReducer } from "react"
 
 import { createUserDocumentFromAuth, onAuthStateChangedListener } from "../utils/firebase/firebase.utils"
 
-/*
-    È più ordinato mettere i context in una cartella separata in modo da gestirli al meglio
-    prima di tutto creo il context al quale posso passare un default value e che sarà 
-    il valore attuale cioè quello che voglio renderizzare per intenderci in tempo reale
-    programmo già che il context dovrà contenere il valore del contesto e la funzione 
-    che va a cambiarlo e li istanzio a null , così potrò andare a sovrascriverli
-    a mio piacimento nell'app, se non li avessi instanziati avrebbero dato errore
-*/
 export const UserContext = createContext(
     {
         currentUser: null,
@@ -17,17 +9,46 @@ export const UserContext = createContext(
     }
 )
 
-/*
-    Successivamente creo il provider che sarà il vero component che poi vado ad utilizzare
-    nella mia app dove mi serve il valore UserContext devo wrappare questo elemento
-    attorno al provider in modo da averne disposizione
-*/
+export const USER_ACTION_TYPES = {
+    SET_CURRENT_USER: "SET_CURRENT_USER"
+}
+const INITIAL_STATE = {
+    currentUser: null
+}
+/**
+ * 
+ * un reducer necessità di due parametri uno state iniziale ed una funzione action che mi permette di aggiornarlo
+ * la action a suo può contenere due parametri il type (tipo di azione che verrà definita a parte per aggiornare lo state)
+ * e al bisogno, il payload (un qualcosa che utilizzierò nella mia action), un es può essere il prodotto di un db che andrà ad aggiornarmi
+ * un carrello, mi serve quell'oggetto per poter aggiornare nel modo corretto i miei elementi
+ * IL REDUCER RITORNA UN NUOVO OBJECT, quindi dovrò spredare lo state se non indico tutte le props di un obj che ritorno
+ * è sempre meglio dichiarare tutti i type della mia action in una variabile da esportare per mantenere tutto più leggibile
+ * 
+ */
+const userReducer = (state, action) => {
+    const {type, payload} = action
+
+    switch(type) {
+        case USER_ACTION_TYPES.SET_CURRENT_USER :
+            return {
+                ...state,
+                currentUser: payload
+            }
+
+        default : 
+            	throw new Error(`Unhandled type in userReducer action ${type}`)
+    }
+
+}
+
+
 export const UserProvider = ({ children }) => {
-    // vogliamo storeare un user object(l'utente loggato)
-    const [ currentUser, setCurrentUser ] = useState(null)
-    // quindi utilizzo use state per tenere monitorati i cambiamenti, inizialmente sarà null, al 
-    // login si popola quindi passo queste due var come props al mio provider, in modo da averne
-    // disposizione dove voglio
+
+    const [ state, dispatch ] = useReducer(userReducer, INITIAL_STATE)
+    const { currentUser } = state
+    const setCurrentUser = (user) => {
+        dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user})
+    }
     const value = {currentUser, setCurrentUser}
 
     /*
@@ -42,7 +63,6 @@ export const UserProvider = ({ children }) => {
         setCurrentUser(user)
         // console.log(user)
     })
-    //  con use effect quello che metto al return è cosa voglio eseguire all'unmoount del component
     return unsubscribe
    }, [])
 
