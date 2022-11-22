@@ -5,6 +5,11 @@ export const BackgroundImage = styled.div`
   height: 100%;
   background-size: cover;
   background-position: center;
+  /* 
+    passo come prop imageUrl e faccio il destructuring sul primo termine per richiamarlo
+    e compongo la stringa che mi serve per aggiungere al backgriund image il mio url
+    di riferimento per la img
+  */
   background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 `;
 

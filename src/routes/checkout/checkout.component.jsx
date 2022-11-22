@@ -2,39 +2,41 @@ import { useContext } from "react"
 import CheckoutItem from "../../components/checkout-item/checkout-item.component"
 import { CartContext } from "../../contexts/cart.context"
 
-import './checkout.scss'
+// import './checkout.scss'
+import { CheckoutContainer, CheckoutHeader, HeaderBlock, Total } from './checkout.styles'
+
 const Checkout = () => {
     const { cartItems, cartTotal } = useContext(CartContext)
 
     return (
-        <div className="checkout-container">
+        <CheckoutContainer>
             { cartItems.length        
                 ?   <>
-                        <div className="checkout-header">
-                            <div className="header-block">
+                        <CheckoutHeader>
+                            <HeaderBlock>
                                 <span>Product</span>
-                            </div>
-                            <div className="header-block">
+                            </HeaderBlock>
+                            <HeaderBlock>
                                 <span>Description</span>
-                            </div>
-                            <div className="header-block">
+                            </HeaderBlock>
+                            <HeaderBlock>
                                 <span>Quantity</span>
-                            </div>
-                            <div className="header-block">
+                            </HeaderBlock>
+                            <HeaderBlock>
                                 <span>Price</span>
-                            </div>
-                            <div className="header-block">
+                            </HeaderBlock>
+                            <HeaderBlock>
                                 <span>Remove</span>
-                            </div>
-                        </div>
+                            </HeaderBlock>
+                        </CheckoutHeader>
 
                         {cartItems.map(item => <CheckoutItem key={item.id} item={item} />)}
                     </>
                 
                 : <h2 style={{marginTop: '10px'}}>Your Cart is Empty</h2> 
             } 
-            <div className="total">Total: ${cartTotal.toFixed(2)}</div>
-        </div>
+            <Total>Total: ${cartTotal.toFixed(2)}</Total>
+        </CheckoutContainer>
     )
 }
 

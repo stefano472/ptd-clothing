@@ -11,13 +11,13 @@ export const BaseButton = styled.button`
   background-color: black;
   color: white;
   text-transform: uppercase;
-  font-family: 'Open Sans Condensed';
+  font-family: 'Ubuntu Condensed';
   font-weight: bolder;
   border: none;
   cursor: pointer;
   display: flex;
   justify-content: center;
-
+  border-radius: 2px;
   &:hover {
     background-color: white;
     color: black;

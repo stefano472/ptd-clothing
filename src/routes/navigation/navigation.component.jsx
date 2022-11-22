@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { Outlet, Link } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 import { ReactComponent as PtdLogo } from "../../assets/my-logo.svg"
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component"
 import CartIcon from "../../components/cart-icon/cart-icon.components"
@@ -11,7 +11,8 @@ import { signOutUser } from "../../utils/firebase/firebase.utils"
 
 
 
-import './navigation.scss'
+// import './navigation.scss'
+import { NavigationContainer, NavLink, NavLinks, LogoContainer } from './navigation.styles'
 
 const Navigation = () => {
 
@@ -30,30 +31,30 @@ const Navigation = () => {
 
     return (
         <>
-            <div className="navigation">
-                <Link className="logo-container" to='/' >
+            <NavigationContainer >
+                <LogoContainer to='/' >
                     <PtdLogo className="logo" style={{filter: 'brightness(0)'}} />
-                </Link>
-                <div className="nav-links-container" >
-                    <Link className="nav-link" to='/shop' >
+                </LogoContainer>
+                <NavLinks >
+                    <NavLink to='/shop' >
                         SHOP
-                    </Link>
+                    </NavLink>
                     { 
                         currentUser ? 
-                            <span onClick={signOutUser} className="nav-link">
+                            <NavLink as='span' onClick={signOutUser} >
                                 SIGN OUT
-                            </span>
+                            </NavLink>
                         :
-                            <Link className="nav-link" to='/auth' >
+                            <NavLink to='/auth' >
                                 SIGN IN
-                            </Link>
+                            </NavLink>
                     }
                     <CartIcon toggleCart={toggleCart} />
-                </div>
+                </NavLinks>
                 {
                     cartToggle && <CartDropdown toggleCart={toggleCart} />
                 }
-            </div>
+            </NavigationContainer >
             <Outlet />
         </>
     )
