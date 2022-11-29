@@ -119,15 +119,19 @@ export const getCategoriesAndDocuments = async () => {
 
     // qui voglio invece ridurre il mio result in base alle categories
     // qua invece ottengo 1 oggetto con 5 key (i title) che hanno come valore un array di items(prodotti)
-    const categoryMap = querySnapshot.docs.reduce((acc, doc) => {
-        const { title, items } = doc.data()
-        // a questo punto vado a settare l'accumulator, e dico alla key equivalente al title,
-        // gli vado ad associare i miei items nel quale ci sono tutti i dati
-        acc[title.toLowerCase()] = items
-        return acc
-    }, {})
+    const categoriesArray = querySnapshot.docs.map(docSnapshot => docSnapshot.data())
+    
+    // .reduce((acc, doc) => {
+    //     const { title, items } = doc.data()
+    //     // a questo punto vado a settare l'accumulator, e dico alla key equivalente al title,
+    //     // gli vado ad associare i miei items nel quale ci sono tutti i dati
+    //     acc[title.toLowerCase()] = items
+    //     return acc
+    // }, {})
 
-    return categoryMap
+    return categoriesArray
+    // con quest'ultimo cambiamento la funz getCategoriesand document ritornerà un array di categories
+    // invece che un oggetto
 }
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {

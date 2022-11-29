@@ -1,6 +1,8 @@
-import { createContext, useReducer } from "react"
+// una volta impostato Redux questo file non mi occorre più
 
-// import { createUserDocumentFromAuth, onAuthStateChangedListener } from "../utils/firebase/firebase.utils"
+import { createContext, useEffect, useReducer } from "react"
+
+import { createUserDocumentFromAuth, onAuthStateChangedListener } from "../utils/firebase/firebase.utils"
 
 export const UserContext = createContext(
     {
@@ -8,8 +10,6 @@ export const UserContext = createContext(
         setCurrentUser: () => null
     }
 )
-
-// sposto tutto il mio reducer all'interno dello store per implemetnarlo con redux
 
 export const USER_ACTION_TYPES = {
     SET_CURRENT_USER: "SET_CURRENT_USER"
@@ -40,35 +40,33 @@ const userReducer = (state, action) => {
         default : 
             	throw new Error(`Unhandled type in userReducer action ${type}`)
     }
+
 }
 
 
 export const UserProvider = ({ children }) => {
 
     const [ state, dispatch ] = useReducer(userReducer, INITIAL_STATE)
-
     const { currentUser } = state
-
     const setCurrentUser = (user) => {
         dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user})
     }
-
     const value = {currentUser, setCurrentUser}
 
     /*
         con use effect ed un array di dipendenze vuoto indico che voglio runnare questa funzione
         una volta sola, come un mounted per intenderci 
     */
-//    useEffect(() => {
-//     const unsubscribe = onAuthStateChangedListener((user) => {
-//         if(user) {
-//             createUserDocumentFromAuth(user)
-//         }
-//         setCurrentUser(user)
-//         // console.log(user)
-//     })
-//     return unsubscribe
-//    }, [])
+   useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
+        if(user) {
+            createUserDocumentFromAuth(user)
+        }
+        setCurrentUser(user)
+        // console.log(user)
+    })
+    return unsubscribe
+   }, [])
 
     return <UserContext.Provider value={value} >{children}</UserContext.Provider>
 }

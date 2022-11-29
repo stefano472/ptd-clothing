@@ -1,3 +1,5 @@
+// avendo gestito tutto con redux potrei anche cancellarrlo questo file
+
 import { createContext, useState, useEffect } from "react";
 
 import { getCategoriesAndDocuments } from "../utils/firebase/firebase.utils.js";

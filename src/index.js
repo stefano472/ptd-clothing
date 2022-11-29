@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import App from './App';
 // import { UserProvider } from './contexts/user.context';
-import { CategoriesProvider } from './contexts/categories.context';
+// import { CategoriesProvider } from './contexts/categories.context';
 import { CartProvider } from './contexts/cart.context';
 import { store } from './store/store';
 
@@ -22,11 +22,11 @@ root.render(
           {/* vado a specificare che tutti i component all'interno di questo tag,
           nel mio caso tutti, perchè ho wrappato App, avranno accesso alle due var esplicitate
           nel context(ovvero il context stesso e la funzione per settarlo) */}
-          <CategoriesProvider>
+          {/* <CategoriesProvider> */}
             <CartProvider >
               <App /> 
             </CartProvider>
-          </CategoriesProvider>
+          {/* </CategoriesProvider> */}
         {/* </UserProvider> */}
       </BrowserRouter>
     </Provider>
