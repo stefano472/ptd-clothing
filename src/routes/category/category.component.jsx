@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import ProductCard from '../../components/product-card/product-card.component'
+import Spinner from "../../components/spinner/spinner.component"
 
 // import { CategoriesContext } from '../../contexts/categories.context'
 import { useSelector } from 'react-redux'
-import { selectCategoriesMap } from '../../store/categories/category.selector'
+import { selectCategoriesIsLoading, selectCategoriesMap } from '../../store/categories/category.selector'
 
 // import './category.scss'
 import { CategoryContainer, Title } from './category.styles'
@@ -16,7 +17,8 @@ const Category = () => {
 
     // const { categoriesMap } = useContext(CategoriesContext)
     const categoriesMap = useSelector(selectCategoriesMap)
-
+    // console.log(useSelector(selectCategoriesIsLoading), "consol")
+    const isLoading = useSelector(selectCategoriesIsLoading)
     /**
      * A questo punto avrei potuto settare i miei products direttamente con un = categoriesMap[category]
      * però così facendo il component si sarebbe rirenderizzato tutte le volte che cambiavo un
@@ -33,13 +35,16 @@ const Category = () => {
   return (
     <>
         <Title>{category.toUpperCase()}</Title>
-        <CategoryContainer>
-            {
-                products && products.map(product => {
-                    return <ProductCard key={product.id} product={product} />
-                })
-            }
-        </CategoryContainer>
+        {
+            isLoading ? <Spinner />
+                : <CategoryContainer>
+                    {
+                        products && products.map(product => {
+                            return <ProductCard key={product.id} product={product} />
+                        })
+                    }
+                </CategoryContainer>
+        }
     </>
   )
 }

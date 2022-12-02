@@ -7,6 +7,7 @@ import storage from 'redux-persist/lib/storage'
 import logger from 'redux-logger'
 
 import { rootReducer } from './root-reducer'
+import thunk from 'redux-thunk'
 
 // root-reducer è il reducer che va a contenere tutti i sotto reducer e crea lo stato globale accessibile ovuunque nell'app
 
@@ -16,17 +17,21 @@ import { rootReducer } from './root-reducer'
  * voglio mostrare i console log del middleware solo in fase di development quindi setto questa condizione di ambiente
  * e filtro in questo modo, per far si che se non siamo in development non passi un valore di tipo false, così facendo passo un array vuoto
  */
-const middlewares = [process.env.NODE_ENV !== 'development' && logger].filter(Boolean)
-const composedEnhancer = compose(applyMiddleware(...middlewares))
 
 const persistConfig = {
     key: 'root',
     storage, 
     // vado a definire cosa non voglio storare, perchè lo user si salva in con l'auth reducer
-    blacklist: ['user']
+    // blacklist: ['user']
+    // vado a definire cosa voglio storare
+    whitelist: ['cart']
+
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+const middlewares = [process.env.NODE_ENV !== 'production' && logger, thunk].filter(Boolean)
+const composedEnhancer = compose(applyMiddleware(...middlewares))
 
 export const store =  createStore(persistedReducer, undefined, composedEnhancer)
 export const persistor = persistStore(store)
