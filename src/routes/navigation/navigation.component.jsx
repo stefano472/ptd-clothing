@@ -1,13 +1,15 @@
-import { useContext } from "react"
+// import { useContext } from "react"
 import { Outlet } from "react-router-dom"
 import { ReactComponent as PtdLogo } from "../../assets/my-logo.svg"
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component"
 import CartIcon from "../../components/cart-icon/cart-icon.components"
 
 // import { UserContext } from "../../contexts/user.context"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { selectCurrentUser } from '../../store/user/user.selector'
-import { CartContext } from "../../contexts/cart.context"
+// import { CartContext } from "../../contexts/cart.context"
+import { selectCartToggle } from '../../store/cart/cart.selector'
+import { setCartToggle } from '../../store/cart/cart.action'
 
 import { signOutUser } from "../../utils/firebase/firebase.utils"
 
@@ -28,10 +30,13 @@ const Navigation = () => {
     // al posto del context utilizzo lo useSelector di redux
     const currentUser = useSelector(selectCurrentUser)
 
-    const { cartToggle, setCartToggle } = useContext(CartContext)
+    // const { cartToggle, setCartToggle } = useContext(CartContext)
+    const dispatch = useDispatch()
+
+    const cartToggle = useSelector(selectCartToggle)
 
     const toggleCart = () => {
-        setCartToggle(!cartToggle)
+        dispatch(setCartToggle(!cartToggle))
     }
 
     return (

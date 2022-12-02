@@ -1,3 +1,5 @@
+// CON REDUX NON MI SERVE PIÙ QUESTO CONTEXT
+
 import { createContext, useReducer } from "react";
 
 const addCartItem = (cartItems, productToAdd) => {
