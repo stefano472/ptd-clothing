@@ -1,6 +1,6 @@
 import { CATEGORIES_ACTION_TYPES } from "./category.types";
 
-import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils";
+// import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils";
 
 // export const setCategories = (categoriesArray) => {
 //     return {
@@ -36,13 +36,16 @@ export const fetchCategoriesFailed = (error) => {
  * farò fare il dispatch
  */
 
-export const fetchCategoriesAsync = () => async (dispatch) => { 
-    dispatch(fetchCategoriesStart())
+// a questo punto procedo a trasferire la mia thunk function
+// to saga
 
-    try {
-        const categoriesArray = await getCategoriesAndDocuments("categories")
-        dispatch(fetchCategoriesSuccess(categoriesArray))
-    } catch(error) {
-        dispatch(fetchCategoriesFailed(error))
-    }
-}
+// export const fetchCategoriesAsync = () => async (dispatch) => { 
+//     dispatch(fetchCategoriesStart())
+
+//     try {
+//         const categoriesArray = await getCategoriesAndDocuments("categories")
+//         dispatch(fetchCategoriesSuccess(categoriesArray))
+//     } catch(error) {
+//         dispatch(fetchCategoriesFailed(error))
+//     }
+// }

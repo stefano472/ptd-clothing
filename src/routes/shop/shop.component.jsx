@@ -4,7 +4,8 @@ import { Routes, Route } from "react-router-dom"
 
 
 // import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils"
-import { fetchCategoriesAsync } from "../../store/categories/category.action"
+// import { fetchCategoriesAsync } from "../../store/categories/category.action"
+import { fetchCategoriesStart } from "../../store/categories/category.action"
 import CategoriesPreview from "../categories-preview/categories-preview.component"
 import Category from "../category/category.component"
 // import './shop.scss'
@@ -13,7 +14,11 @@ const Shop = () => {
   const dispatch = useDispatch()
   
   useEffect(() => {
-    dispatch(fetchCategoriesAsync())
+    // per concluider migrando da redux-thunk a redux-saga, root saga e category saga per far partire la richiesta delle
+    // categories, aspettano la partenza della funz fetchCategoriesStart, che è quella che vado a dispatchare
+    dispatch(fetchCategoriesStart())
+
+    // dispatch(fetchCategoriesAsync())
     // const getCategoriesMap = async () => {
       /**
        * questo dispath che prima eseguivo qui ora lo vado ad estrapolare nelle

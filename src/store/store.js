@@ -7,7 +7,13 @@ import storage from 'redux-persist/lib/storage'
 import logger from 'redux-logger'
 
 import { rootReducer } from './root-reducer'
-import thunk from 'redux-thunk'
+// il thunk è un cugino di redux saga, solo che quest' ultimo
+// è molto più completa e con molte più funzionalità, quindi a
+// questo punto lo commentiamo
+// import thunk from 'redux-thunk'
+import createSagaMiddleware from '@redux-saga/core'
+
+import { rootSaga } from './root-saga'
 
 // root-reducer è il reducer che va a contenere tutti i sotto reducer e crea lo stato globale accessibile ovuunque nell'app
 
@@ -28,10 +34,15 @@ const persistConfig = {
 
 }
 
+const sagaMiddleware = createSagaMiddleware()
+
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-const middlewares = [process.env.NODE_ENV !== 'production' && logger, thunk].filter(Boolean)
+const middlewares = [process.env.NODE_ENV !== 'production' && logger, sagaMiddleware].filter(Boolean)
 const composedEnhancer = compose(applyMiddleware(...middlewares))
 
 export const store =  createStore(persistedReducer, undefined, composedEnhancer)
+
+sagaMiddleware.run(rootSaga)
+
 export const persistor = persistStore(store)
